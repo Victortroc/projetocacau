@@ -8,7 +8,10 @@ interface IQueryProps {
     id?: number,
     page?: number,
     limit?: number,
-    filter?: string
+    filter?: string,
+    order?: string,
+    period?: string,
+    statusBy?: string
 };
 
 export const getAllValidation = validation((getSchema) => ({
@@ -16,7 +19,10 @@ export const getAllValidation = validation((getSchema) => ({
         page: yup.number().optional().moreThan(0),
         limit: yup.number().optional().moreThan(0),
         id: yup.number().integer().optional().default(0),
-        filter: yup.string().optional()
+        filter: yup.string().optional(),
+        order: yup.string().optional().default("desc"),
+        period: yup.string().optional().default(""),
+        statusBy: yup.string().optional().default("")
     }))
 }));
 
@@ -27,10 +33,13 @@ export const getAll = async (req: Request<{}, {}, {}, IQueryProps>, res: Respons
         req.query.page || 1,
         req.query.limit || 7,
         req.query.filter || "",
-        Number(req.query.id)
+        Number(req.query.id),
+        req.query.order || "desc",
+        req.query.period || "",
+        req.query.statusBy || ""
     );
 
-    const count = await counteWithdraw(req.query.filter);
+    const count = await counteWithdraw(req.query.filter, req.query.period, req.query.statusBy);
 
     if (result instanceof Error) {
         return res.status(500).json({

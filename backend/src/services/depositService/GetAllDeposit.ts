@@ -2,14 +2,22 @@ import { ETableNames } from "../../database/ETableNames";
 import { Knex } from "../../database/knex";
 import { IDeposit } from "../../database/models";
 
-export const getAllDeposit = async (page: number, limit: number, filter: string, id = 0): Promise< IDeposit[] | Error > => {
+export const getAllDeposit = async (page: number, limit: number, filter: string, id = 0, order = "desc", period = ""): Promise< IDeposit[] | Error > => {
 
     try {
 
         const result = await Knex(ETableNames.deposit)
             .select("*")
-            .where("id", "=", Number(id))
-            .orWhere("nameUser", "like", `%${filter}%`)
+            .where(function() {
+                this.where("id", "=", Number(id))
+                .orWhere("nameUser", "like", `%${filter}%`)
+                .orWhere("createdAt", "like", `%${period}%`);
+            })
+                .andWhere(function() {
+                this.where("nameUser", "like", `%${filter}%`)
+                .andWhere("createdAt", "like", `%${period}%`);
+            })
+            .orderBy("createdAt", order) 
             .offset((page - 1) * limit)
             .limit(limit);
     

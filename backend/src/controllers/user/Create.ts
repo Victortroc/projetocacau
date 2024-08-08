@@ -3,6 +3,7 @@ import * as yup from "yup";
 import { validation }from "../../middleware";
 import { IUser } from "../../database/models";
 import { createUser } from "../../services/userService/CreateUserService";
+import bcrypt from 'bcryptjs';
 
 
 interface IBodyProps extends Omit<IUser, "id" | "createdAt" | "updatedAt"> {};
@@ -16,8 +17,8 @@ body: getSchema<IBodyProps>(
     name: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().required(),
-    admin: yup.boolean().required(),
-    address: yup.string().nullable().max(5, 'Address cannot be longer than 5 characters').when('admin', {
+    admin: yup.boolean().default(false),
+    address: yup.string().nullable().min(5, 'Address cannot be smaller than 5 characters').max(120, 'Address cannot be longer than 120 characters').when('admin', {
         is: false,
         then: (schema) => schema.required(),
         otherwise: (schema) => schema.nullable()
@@ -39,7 +40,7 @@ body: getSchema<IBodyProps>(
     }),
     balance: yup.number().nullable().when('admin', {
         is: false,
-        then: (schema) => schema.required(),
+        then: (schema) => schema.nullable(),
         otherwise: (schema) => schema.nullable()
     })
     })
@@ -48,6 +49,8 @@ body: getSchema<IBodyProps>(
 
 
 export const create = async (req: Request<{}, {}, IBodyProps>, res: Response) => {
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const userData: Omit<IUser, "id" | "updatedAt"> = {
         ...req.body,
@@ -59,7 +62,8 @@ export const create = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
             minute: '2-digit',
             second: '2-digit',
             hour12: false,
-        }).replace(',', '').replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$1-$2-$3')
+        }).replace(',', '').replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$1-$2-$3'),
+        password: hashedPassword
     };
 
     const result = await createUser(userData);

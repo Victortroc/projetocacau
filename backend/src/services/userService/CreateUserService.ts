@@ -16,7 +16,20 @@ export const createUser = async (user: Omit<IUser, "id" | "updatedAt">): Promise
         return new Error ("Erro ao cadastrar registro"); 
     } catch (error) {
         console.log("Falha assíncrona");
-        return new Error('Email já cadastrado');
+
+        if (error.message && error.message.includes("user.phone")) {
+            return new Error('Telefone já cadastrado');
+        }
+
+        if (error.message && error.message.includes("user.email")) {
+            return new Error('Email já cadastrado');
+        }
+        
+        if (error.message && error.message.includes("user.cpf")) {
+            return new Error('CPF já cadastrado');
+        }
+    
+        return new Error('Erro ao cadastrar usuário');
     }
 
 

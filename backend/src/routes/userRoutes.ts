@@ -1,21 +1,17 @@
 import { Router } from "express";
 import { UserController } from "../controllers";
+import isAuth from "../middleware/isAuth";
 
 const userRoutes = Router();
 
 
-userRoutes.get("/user", UserController.getAllValidation, UserController.getAll);
+userRoutes.get("/user", isAuth, UserController.getAllValidation, UserController.getAll);
 
-userRoutes.get("/user/:id", UserController.getByIdValidation, UserController.getById);
+userRoutes.get("/user/:id", isAuth, UserController.getByIdValidation, UserController.getById);
 
-userRoutes.post("/user",
-    UserController.createValidation, 
-    UserController.create
-);
+userRoutes.put("/user/:id", isAuth, UserController.putByIdValidation, UserController.putById);
 
-userRoutes.put("/user/:id", UserController.putByIdValidation, UserController.putById);
-
-userRoutes.delete("/user/:id", UserController.deleteByIdValidation, UserController.deleteById);
+userRoutes.delete("/user/:id", isAuth, UserController.deleteByIdValidation, UserController.deleteById);
 
 
 export default userRoutes;

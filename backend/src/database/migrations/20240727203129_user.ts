@@ -9,10 +9,10 @@ export async function up(knex: Knex): Promise<void> {
         table.string('name').notNullable();
         table.string('email').notNullable().unique();
         table.string('password').notNullable();
-        table.boolean('admin').defaultTo(false).notNullable();
+        table.boolean('admin').defaultTo(false);
         table.string('address');
-        table.bigint('phone');
-        table.bigint('cpf');
+        table.bigint('phone').unique();
+        table.bigint('cpf').unique();
         table.date('birthday');
         table.decimal('balance', 10, 2).notNullable().defaultTo(0);
         table.date('createdAt').notNullable();
