@@ -26,4 +26,21 @@ export const test: Knex.Config = {
     connection: ":memory:"
 };
 
-export const production: Knex.Config = {};
+export const production: Knex.Config = {
+    client: "sqlite",
+    useNullAsDefault: true,
+    connection: {
+        filename: path.resolve(__dirname, "..", "..", "..", "database.sqlite")
+    },
+    migrations: {
+        directory: path.resolve(__dirname, "..", "migrations")
+    },
+    seeds: {
+        directory: path.resolve(__dirname, "..", "seeds")
+    },
+    pool: {
+        afterCreate: (connection: any, done: Function) => {
+            connection.run('PRAGMA foreign_keys = ON;', done);
+        }
+    }
+};
