@@ -8,10 +8,10 @@
     "dev:start": "nodemon --exec ts-node-dev ./src/server.ts",
     "start": "node dist/server.js",
     "build:fast": "tsc --noEmitOnError --incremental --skipLibCheck",
-    "knex:migrate": "knex --knexfile ./src/database/knex/Environment.ts migrate:latest",
+    "knex:migrate": "knex --knexfile ./src/database/knex/index.ts migrate:latest",
     "knex:rollback": "knex --knexfile ./src/database/knex/Environment.ts migrate:rollback",
     "knex:rollback-all": "knex --knexfile ./src/database/knex/Environment.ts migrate:rollback --all",
-    "knex:seed": "knex --knexfile ./src/database/knex/Environment.ts seed:run"
+    "knex:seed": "knex --knexfile ./src/database/knex/index.ts seed:run"
   },
   "author": "",
   "license": "ISC",
