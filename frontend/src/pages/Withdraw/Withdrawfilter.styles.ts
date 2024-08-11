@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StatusFilterContainer = styled.div`
+export const WithdrawFilterContainer = styled.div`
   padding: 8px;
   background: #fff;
   border-radius: 8px;

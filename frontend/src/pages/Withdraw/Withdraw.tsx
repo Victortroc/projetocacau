@@ -32,22 +32,17 @@ const Withdraw: React.FC<void> = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [periodBy, statusBy, sucessCreate]);
+  }, [periodBy, statusBy, sucessCreate, switchStatus]);
 
   useEffect(() => {
     const order = orderBy ? "asc" : "desc";
     fetchWithdraws(currentPage, limit, searchTerm, order, periodBy, statusBy);
-  }, [statusBy, switchOrder, switchStatus, currentPage, periodBy]);
+  }, [statusBy, switchOrder, switchStatus, currentPage, periodBy, sucessCreate]);
   
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setSearchParamsHook({ page: page.toString(), period: periodBy });
-    if (orderBy) {
-      fetchWithdraws(page, limit, "", "asc", "", statusBy);
-    } else {
-      fetchWithdraws(page, limit, "", "desc", "", statusBy);
-    }
   };
 
   const getVisiblePages = () => {

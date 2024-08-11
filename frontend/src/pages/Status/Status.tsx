@@ -16,7 +16,8 @@ const Status: React.FC<void> = () => {
     fetchStatuss,
     deleteStatus,
     updateStatus,
-    totalPages
+    totalPages,
+    revert
   } = useStatus();
 
   const context = useContext(SearchTermStatusContext);
@@ -25,14 +26,14 @@ const Status: React.FC<void> = () => {
   if (!context) {
     throw new Error('SearchTermStatusContext must be used within a SearchTermProvider');
   }
-  const { searchTerm, sucessCreate, setSearchTerm, periodBy, orderBy, switchOrder, switchStatus, statusBy } = context;
+  const { searchTerm, periodBy, orderBy, switchOrder, switchStatus, statusBy, setSearchTerm } = context;
 
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 5;
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [periodBy, searchTerm]);
+  }, [periodBy, searchTerm, switchStatus]);
 
 
   useEffect(() => {
@@ -43,11 +44,6 @@ const Status: React.FC<void> = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setSearchParamsHook({ page: page.toString(), filter: searchTerm });
-    if (orderBy) {
-        fetchStatuss(page, limit, searchTerm, "asc", periodBy, statusBy);
-      } else {
-        fetchStatuss(page, limit, searchTerm, "desc", periodBy, statusBy);
-      }
   };
 
   const getVisiblePages = () => {
@@ -100,6 +96,14 @@ const Status: React.FC<void> = () => {
     fetchStatuss(currentPage, limit, searchTerm);
   };
 
+  const handleRevert = async (id: number, amount: number) => {
+    await revert(id, amount);
+    setSearchTerm("");
+    handlePageChange(currentPage);
+    fetchStatuss(currentPage, limit, searchTerm);
+  };
+
+
   if (loading) return <CircularProgress />;
 
   return (
@@ -112,6 +116,7 @@ const Status: React.FC<void> = () => {
                 status={status}
                 onEdit={handleUpdateStatus}
                 onDelete={handleDeleteStatus}
+                onRevert={handleRevert}
             />
           </Grid>
 

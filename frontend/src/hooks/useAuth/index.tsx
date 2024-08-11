@@ -8,15 +8,18 @@ interface User {
   name: string;
   email: string;
   admin: boolean;
+  balance?: number;
 }
 
 interface AuthContextProps {
   token: string | null;
   user: User | null;
   loading: boolean;
+  amountCurrent: number;
   handleLogin: (userData: Record<string, any>) => Promise<void>;
   handleSignup: (userData: Record<string, any>) => Promise<void>;
   handleLogout: () => Promise<void>;
+  setAmountCurrent: (term: any) => void;
 }
 
 const useAuth = (): AuthContextProps => {
@@ -25,6 +28,7 @@ const useAuth = (): AuthContextProps => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [_, setSearchParams] = useSearchParams("");
+  const [amountCurrent, setAmountCurrent] = useState(0);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -52,7 +56,11 @@ const useAuth = (): AuthContextProps => {
 
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       toast.success("Logado com sucesso!");
-      navigate("/dashboard");
+      if (user.admin) {
+        navigate("/dashboard");
+      } else {
+        navigate("/dashboard-client");
+      }
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {
         toast.error(error.response.data.error.default);
@@ -108,6 +116,8 @@ const useAuth = (): AuthContextProps => {
     handleLogin,
     handleSignup,
     handleLogout,
+    amountCurrent, 
+    setAmountCurrent
   };
 };
 

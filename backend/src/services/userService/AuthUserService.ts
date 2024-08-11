@@ -48,7 +48,8 @@ const AuthUserService = async ({ email, password }: AuthUserServiceProps): Promi
         id: user.id,
         name: user.name,
         email: user.email,
-        admin: user.admin
+        admin: user.admin,
+        balance: user.balance
     };
 
     return {

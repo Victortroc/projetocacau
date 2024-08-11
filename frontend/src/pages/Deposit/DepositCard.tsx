@@ -10,36 +10,59 @@ interface DepositCardProps {
 
 const Card = styled.div`
   border: 1px solid #ddd;
-
   padding: 16px;
   margin: 8px 0;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
   width: 100%;
+  max-width: 100%;
+
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const Title = styled.h3`
   margin: 0;
   font-size: 1.25em;
   color: #333;
+
+  @media (max-width: 600px) {
+    font-size: 1.15em;
+    margin-bottom: 8px;
+  }
 `;
 
 const Actions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
   button {
-    margin-left: 8px;
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.875em;
+
+    @media (max-width: 600px) {
+      padding: 8px 12px;
+      font-size: 0.85em;
+      width: 100%;
+    }
   }
 
   .edit-button {
@@ -55,11 +78,25 @@ const Actions = styled.div`
 
 const Info = styled.div`
   margin-bottom: 8px;
+
+  @media (max-width: 600px) {
+    margin-bottom: 12px;
+  }
 `;
 
 const InfoItem = styled.div`
   font-size: 0.875em;
   color: #555;
+
+  @media (max-width: 600px) {
+    font-size: 0.85em;
+    min-width: 75px;
+  }
+
+  strong {
+    display: inline-block;
+    min-width: 10px;
+  }
 `;
 
 const DepositCard: React.FC<DepositCardProps> = ({ deposit, onEdit, onDelete }) => {

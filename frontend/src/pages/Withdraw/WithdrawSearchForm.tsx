@@ -2,9 +2,10 @@ import React, { useContext, useEffect } from 'react';
 import { TextField, Grid, IconButton, Button } from '@mui/material';
 import NorthIcon from '@mui/icons-material/North';
 import SouthIcon from '@mui/icons-material/South';
-import { WithdrawFormContainer } from './WithdrawForm.styles';
 import useWithdraw from '../../hooks/Withdraw';
 import { SearchWithdrawContext } from '../../context/SearchWithdrawContext';
+import { WithdrawFilterContainer } from './Withdrawfilter.styles';
+
 
 const WithdrawSearchForm: React.FC = () => {
 
@@ -50,7 +51,7 @@ const WithdrawSearchForm: React.FC = () => {
 
 
   return (
-    <WithdrawFormContainer>
+    <WithdrawFilterContainer>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
           <IconButton size="small" onClick={handleSortAscending}>
@@ -82,7 +83,7 @@ const WithdrawSearchForm: React.FC = () => {
           />
         </Grid>
       </Grid>
-    </WithdrawFormContainer>
+    </WithdrawFilterContainer>
   );
 };
 

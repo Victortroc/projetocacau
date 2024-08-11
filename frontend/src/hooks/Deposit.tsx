@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import api from '../services/api';
 import { toast } from 'react-toastify';
 import { useSearchParams } from 'react-router-dom';
+import useAuth from "./useAuth";
 
 export interface User {
   id: number;
@@ -29,7 +30,7 @@ const useDeposit = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const [, setSearchParamsHook] = useSearchParams();
-
+  const { setAmountCurrent } = useAuth();
 
   // Função para buscar usuários
   const fetchUsers = useCallback(async () => {
@@ -90,7 +91,6 @@ const useDeposit = () => {
   const createDeposit = async (userId: number, amount: string) => {
     try {
       await api.post('/deposit', { userId, amount });
-      fetchDeposits(1, limit, ''); // Atualiza após a criação
       toast.success("Depósito criado com sucesso");
     } catch (error: any) {
         if (error.response && error.response.data && error.response.data.error) {
@@ -104,7 +104,6 @@ const useDeposit = () => {
   const deleteDeposit = async (id: number) => {
     try {
       await api.delete(`/deposit/${id}`);
-    //   fetchDeposits(currentPage, limit, searchTerm);
       toast.success("Depósito excluído com sucesso");
     } catch (error: any) {
 

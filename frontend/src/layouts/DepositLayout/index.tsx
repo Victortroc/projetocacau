@@ -14,7 +14,14 @@ interface DepositLayoutProps {
 const DepositLayout: React.FC<DepositLayoutProps> = ({ children }) => {
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" p={2} overflow="hidden" height="160vh"  >
+    <Box display="flex" flexDirection="column" alignItems="center" p={2} overflow="auto" height="160vh" 
+    sx={{
+      scrollbarWidth: 'none',  // Esconde a barra de rolagem no Firefox
+      '&::-webkit-scrollbar': {
+        display: 'none',  // Esconde a barra de rolagem no Chrome, Safari e Edge
+      },
+    }}
+    >
       <Box mb={2} width="100%">
         <DepositForm />
       </Box>

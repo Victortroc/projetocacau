@@ -3,36 +3,33 @@ import { useTheme } from '@mui/material/styles';
 import { LineChart, axisClasses } from '@mui/x-charts';
 import { ChartsTextStyle } from '@mui/x-charts/ChartsText';
 import Title from './Title';
+import useDeposit, { Deposit } from '../../hooks/Deposit';
 
-// Generate Sales Data
-function createData(
-  time: string,
-  amount?: number,
-): { time: string; amount: number | null } {
-  return { time, amount: amount ?? null };
+interface ChartProps {
+  deposits: Deposit[];
+  loading: boolean;
 }
 
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00'),
-];
-
-export default function Chart() {
+export default function Chart({ deposits, loading }: ChartProps) {
   const theme = useTheme();
+
+    const data = deposits.map((deposit) => {
+        const timeString = new Date(deposit.createdAt).toLocaleTimeString();
+        
+        // const formattedTime = timeString.replace(/(\d{2}):(\d{2})/, '$2-$1');
+        
+        return {
+        time: timeString,
+        amount: deposit.amount,
+        };
+    });
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Today's Deposits</Title>
       <div style={{ width: '100%', flexGrow: 1, overflow: 'hidden' }}>
         <LineChart
-          dataset={data}
+          dataset={loading ? [] : data}
           margin={{
             top: 16,
             right: 20,
@@ -49,13 +46,13 @@ export default function Chart() {
           ]}
           yAxis={[
             {
-              label: 'Sales ($)',
+              label: 'Amount ($)',
               labelStyle: {
                 ...(theme.typography.body1 as ChartsTextStyle),
                 fill: theme.palette.text.primary,
               },
               tickLabelStyle: theme.typography.body2 as ChartsTextStyle,
-              max: 2500,
+              max: Math.max(...data.map((d) => d.amount), 2500),
               tickNumber: 3,
             },
           ]}

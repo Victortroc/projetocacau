@@ -17,6 +17,8 @@ withDrawRoutes.post("/withdraw",
 
 withDrawRoutes.put("/withdraw/:id", isAuth, isAdmin, WithdrawController.putByIdValidation, WithdrawController.putStatus);
 
+withDrawRoutes.put("/withdraw-revert/:id", isAuth, isAdmin, WithdrawController.revertByIdValidation, WithdrawController.revertWithdraw);
+
 withDrawRoutes.delete("/withdraw/:id", isAuth, WithdrawController.deleteByIdValidation, WithdrawController.deleteById);
 
 

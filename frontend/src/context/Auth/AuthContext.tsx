@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode } from "react";
+import React, { createContext, ReactNode, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 
 interface AuthProviderProps {
@@ -8,10 +8,10 @@ interface AuthProviderProps {
 const AuthContext = createContext<any>(null);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const { token, user, loading, handleLogin, handleLogout } = useAuth();
+  const { token, user, loading, handleLogin, handleLogout, amountCurrent, setAmountCurrent } = useAuth();
 
   return (
-    <AuthContext.Provider value={{ token, user, loading, handleLogin, handleLogout }}>
+    <AuthContext.Provider value={{ token, user, loading, handleLogin, handleLogout, amountCurrent, setAmountCurrent }}>
       {children}
     </AuthContext.Provider>
   );

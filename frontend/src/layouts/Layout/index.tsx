@@ -47,7 +47,7 @@ const AppBar = styled(MuiAppBar, {
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     '& .MuiDrawer-paper': {
-      position: 'relative',
+      position: 'absolute',
       whiteSpace: 'nowrap',
       width: drawerWidth,
       transition: theme.transitions.create('width', {
@@ -55,6 +55,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         duration: theme.transitions.duration.enteringScreen,
       }),
       boxSizing: 'border-box',
+      [theme.breakpoints.down('sm')]: {
+        display: open ? 'block' : 'none',  // Adicione esta linha para mobile
+      },
       ...(!open && {
         overflowX: 'hidden',
         transition: theme.transitions.create('width', {
@@ -74,7 +77,7 @@ const defaultTheme = createTheme();
 
 const Layout: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => {
     const [open, setOpen] = React.useState(true);
-    const { handleLogout } = useAuth();
+    const { handleLogout, user } = useAuth();
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -142,7 +145,7 @@ const Layout: React.FC<{ title: string; children: React.ReactNode }> = ({ title,
                 <List component="nav">
                     <MainListItems />
                     <Divider sx={{ my: 1 }} />
-                    <SecondaryListItems />
+                    {user?.admin ? <SecondaryListItems /> : null}
                 </List>
             </Drawer>
             <Box

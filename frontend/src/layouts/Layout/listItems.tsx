@@ -6,29 +6,25 @@ import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { useNavigate } from 'react-router-dom';  
+import { useNavigate } from 'react-router-dom';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';  
 
 export const MainListItems = () => {
   const navigate = useNavigate();
   return (
     <React.Fragment>
-      <ListItemButton onClick={() => navigate('/dashboard')}>
+      
+      <ListItemButton onClick={() => navigate('/dashboard-client')}>
           <ListItemIcon>
             <DashboardIcon />
           </ListItemIcon>
-          <ListItemText primary="Dashboard" />
-        </ListItemButton>
+      <ListItemText primary="Dashboard Client" />
+      </ListItemButton>
       <ListItemButton onClick={() => navigate('/withdraw')}>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Withdraw" />
-      </ListItemButton>
-      <ListItemButton onClick={() => navigate('/settings')}>
-        <ListItemIcon>
-          <ShoppingCartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Settings" />
       </ListItemButton>
     </React.Fragment>
   );
@@ -42,6 +38,12 @@ export const SecondaryListItems = () => {
       <ListSubheader component="div" inset>
         Admin
       </ListSubheader>
+      <ListItemButton onClick={() => navigate('/dashboard')}>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard Admin" />
+      </ListItemButton>
       <ListItemButton onClick={() => navigate('/deposit')}>
         <ListItemIcon>
           <AssignmentIcon />
@@ -50,7 +52,7 @@ export const SecondaryListItems = () => {
       </ListItemButton>
       <ListItemButton onClick={() => navigate('/status')}>
         <ListItemIcon>
-          <AssignmentIcon />
+          <AssignmentTurnedInIcon />
         </ListItemIcon>
         <ListItemText primary="Status" />
       </ListItemButton>

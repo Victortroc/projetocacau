@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Withdraw } from '../../hooks/Withdraw';
 
@@ -15,6 +15,11 @@ const Card = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 100%;
   width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
 `;
 
 const Header = styled.div`
@@ -22,12 +27,23 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
 `;
 
 const Title = styled.h3`
   margin: 0;
   font-size: 1.25em;
   color: #333;
+
+  @media (max-width: 600px) {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
 `;
 
 const Actions = styled.div`
@@ -44,15 +60,35 @@ const Actions = styled.div`
     background-color: #f44336;
     color: white;
   }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      width: 100%;
+      padding: 8px 0;
+      margin-left: 0;
+    }
+  }
 `;
 
 const Info = styled.div`
   margin-bottom: 8px;
+
+  @media (max-width: 600px) {
+    margin-bottom: 12px;
+  }
 `;
 
 const InfoItem = styled.div`
   font-size: 0.875em;
   color: #555;
+
+  @media (max-width: 600px) {
+    font-size: 0.8em;
+  }
 `;
 
 const Status = styled.span<{ $status: string }>`
@@ -60,7 +96,6 @@ const Status = styled.span<{ $status: string }>`
 `;
 
 const WithdrawCard: React.FC<WithdrawCardProps> = ({ withdraw, onDelete }) => {
-
   return (
     <Card>
       <Header>

@@ -40,11 +40,6 @@ const Deposit: React.FC<void> = () => {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
         setSearchParamsHook({ page: page.toString(), filter: searchTerm });
-        if (orderBy) {
-            fetchDeposits(page, limit, "", "asc", "");
-        } else {
-            fetchDeposits(page, limit, "", "desc", "");
-        }
     };
 
   const getVisiblePages = () => {

@@ -56,8 +56,6 @@ const useStatus = () => {
         params: { page, limit, filter, order, period, statusBy }
       });
 
-      console.log(response.data);
-
       const xTotalCount = response.headers['x-total-count'];
 
       if (response.data == false) {
@@ -81,44 +79,57 @@ const useStatus = () => {
     }
   }, []);
 
-  const searchStatuss = (term: string) => {
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
-    debounceTimeout.current = setTimeout(() => {
-      setSearchTerm(term);
-    }, 300);
-  };
-
-  const createStatus = async (userId: number, amount: string) => {
-    try {
-      await api.post('/withdraw', { userId, amount });
-      fetchStatuss(1, limit, ''); // Atualiza após a criação
-      toast.success("Depósito criado com sucesso");
-    } catch (error: any) {
-        if (error.response && error.response.data && error.response.data.error) {
-            toast.error(error.response.data.error.default);
-        } else {
-            toast.error("Erro ao criar saque");
+    const searchStatuss = (term: string) => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
         }
-    }
-  };
+        debounceTimeout.current = setTimeout(() => {
+            setSearchTerm(term);
+        }, 300);
+    };
 
-  const deleteStatus = async (id: number) => {
-    try {
-      await api.delete(`/withdraw/${id}`);
-    //   fetchStatuss(currentPage, limit, searchTerm);
-      toast.success("Saque negado com sucesso");
-    } catch (error: any) {
-
-        if (error.response && error.response.data && error.response.data.error) {
-            toast.error(error.response.data.error.default);
-        } else {
-            toast.error("Erro ao negar saque");
+    const createStatus = async (userId: number, amount: string) => {
+        try {
+        await api.post('/withdraw', { userId, amount });
+        toast.success("Depósito criado com sucesso");
+        } catch (error: any) {
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error.default);
+            } else {
+                toast.error("Erro ao criar saque");
+            }
         }
-      
-    }
-  };
+    };
+
+    const deleteStatus = async (id: number) => {
+        try {
+        await api.delete(`/withdraw/${id}`);
+        toast.success("Saque negado com sucesso");
+        } catch (error: any) {
+
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error.default);
+            } else {
+                toast.error("Erro ao negar saque");
+            }
+        
+        }
+    };
+
+     const revert = async (id: number, amount: number) => {
+        try {
+            await api.put(`/withdraw-revert/${id}`, { amount });
+            toast.success("Saque revertido com sucesso");
+        } catch (error: any) {
+
+            if (error.response && error.response.data && error.response.data.error) {
+                toast.error(error.response.data.error.default);
+            } else {
+                toast.error("Erro ao reverter saque");
+            }
+        
+        }
+    };
 
   const updateStatus = async (id: number, status: string) => {
     try {
@@ -131,7 +142,6 @@ const useStatus = () => {
         } else {
             toast.error("Erro ao atualizar status");
         }
-      
       
     }
   };
@@ -148,7 +158,8 @@ const useStatus = () => {
     setPage: setCurrentPage,
     totalPages,
     setSearchParams,
-    fetchUsers
+    fetchUsers,
+    revert
   };
 };
 

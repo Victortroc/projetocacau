@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../../layouts/Layout';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Chart from './Chart';
+import Withdraws from './Withdraws';
+import useWithdraw from '../../hooks/Withdraw';
+import OrdersList from './Orders';
 
+const DashboardClient: React.FC = () => {
+  const { withdraws, fetchWithdraws, loading, totalPages, currentPage } = useWithdraw();
 
-const Dashboard: React.FC = () => {
+  useEffect(() => {
+    fetchWithdraws(currentPage, 5); // Busca inicial de saques
+  }, [fetchWithdraws, currentPage]);
+
   return (
     <>
       <Grid container spacing={3}>
-        {/* Chart */}
+        {/* Gráfico de Saques */}
         <Grid item xs={12} md={8} lg={9}>
           <Paper
             sx={{
@@ -21,10 +27,10 @@ const Dashboard: React.FC = () => {
               height: 240,
             }}
           >
-            <Chart />
+            <Chart data={withdraws} />
           </Paper>
         </Grid>
-        {/* Recent Deposits */}
+        {/* Saques Recentes */}
         <Grid item xs={12} md={4} lg={3}>
           <Paper
             sx={{
@@ -34,13 +40,13 @@ const Dashboard: React.FC = () => {
               height: 240,
             }}
           >
-            <Deposits />
+            <Withdraws withdraws={withdraws} loading={loading} />
           </Paper>
         </Grid>
         {/* Recent Orders */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <Orders />
+            <OrdersList withdraws={withdraws} totalPages={totalPages} loading={loading} />
           </Paper>
         </Grid>
       </Grid>
@@ -48,4 +54,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardClient;
