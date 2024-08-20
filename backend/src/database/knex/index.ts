@@ -1,5 +1,5 @@
 import { knex } from "knex";
-import { development, production, test } from "./Environment";
+import {development, test, production} from "./Environment";
 
 
 const getEnvironment = () => {

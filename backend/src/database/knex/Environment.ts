@@ -27,6 +27,7 @@ export const test: Knex.Config = {
 };
 
 export const production: Knex.Config = {
+
     client: "sqlite3",
     useNullAsDefault: true,
     connection: {
@@ -43,4 +44,36 @@ export const production: Knex.Config = {
             connection.run('PRAGMA foreign_keys = ON;', done);
         }
     }
+
+
 };
+// import path from "path";
+
+// export default {
+
+//     development: {
+//         client: "sqlite3",
+//         useNullAsDefault: true,
+//         connection: {
+//             filename: path.resolve(__dirname, "..", "..", "..", "database.sqlite")
+//         },
+//         migrations: {
+//             directory: path.resolve(__dirname, "..", "migrations")
+//         },
+//         seeds: {
+//             directory: path.resolve(__dirname, "..", "seeds")
+//         },
+//         pool: {
+//             afterCreate: (connection: any, done: Function) => {
+//                 connection.run('PRAGMA foreign_keys = ON;', done);
+//             }
+//         }
+//     },
+//     production: {
+                
+//     },
+//     test: {
+
+//     }
+
+// };

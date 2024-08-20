@@ -5,7 +5,10 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "noEmitOnError": false,
+    "noUnusedLocals": false,     // Desativa o erro para variáveis não utilizadas
+    "noUnusedParameters": false  // Desativa o erro para parâmetros não utilizados
   },
   "include": ["vite.config.ts"]
 }

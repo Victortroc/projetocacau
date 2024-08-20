@@ -22,6 +22,6 @@ app.use((req, res, next) => {
     }
 });
 
-app.listen(3333, () => {
-  console.log('Servidor rodando na porta 3333');
+app.listen(3331, () => {
+  console.log('Servidor rodando na porta 3331');
 });
